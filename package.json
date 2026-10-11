@@ -1,0 +1,15 @@
+{
+  "name": "clock-adbles",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "clock.adbles.com — 온라인 알람·타이머·스톱워치·서버 시계·공휴일 (의존성 없는 정적 사이트)",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node scripts/test-holidays.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "npm test && npm run build",
+    "serve": "npm run build && python3 -m http.server 4401 -d dist",
+    "deploy": "npm run check && npx --yes wrangler@4 deploy"
+  }
+}

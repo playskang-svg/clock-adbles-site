@@ -1,0 +1,36 @@
+name: Deploy clock.adbles.com
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 15 1 * *"   # 매월 1일(KST 0시) 재배포 — 새해 공휴일 페이지·사이트맵 날짜 갱신
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 공휴일 계산 검증
+        run: npm test
+      - name: 빌드
+        run: npm run build
+      - name: 배포 (main/수동/예약만)
+        if: github.event_name != 'pull_request'
+        run: npx --yes wrangler@4 deploy
