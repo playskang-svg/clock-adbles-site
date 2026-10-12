@@ -3,6 +3,6 @@
   "name": "clock-adbles",
   "compatibility_date": "2026-09-01",
   "assets": { "directory": "./dist", "not_found_handling": "404-page" },
-  "routes": [{ "pattern": "clock.adbles.com", "custom_domain": true }],
+  "routes": [{ "pattern": "clock.adbles.com", "custom_domain": true, "zone_name": "adbles.com" }],
   "workers_dev": false
 }
